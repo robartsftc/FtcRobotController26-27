@@ -1,4 +1,4 @@
-# This is In Preparation for the next year's season. 
+# This is in preparation for the next year's season. 
 
 
 
