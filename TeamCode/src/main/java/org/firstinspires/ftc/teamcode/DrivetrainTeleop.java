@@ -26,6 +26,10 @@ public class BasicOpMode_Linear extends LinearOpMode {
         leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
 
+        // Set Motor Direction 
+        leftDrive.setDirection(DcMotor.direction.REVERSE);
+        rightDrive.setDirection(DcMotor.direction.FORWARD)
+
         waitForStart();
         runtime.reset();
 
