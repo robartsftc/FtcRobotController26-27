@@ -19,18 +19,39 @@ public class BasicOpMode_Linear extends LinearOpMode {
     @Override
     public void runOpMode() {
         // Report Ready
-        telemetry.addData("Status", "Initialized")
+        telemetry.addData("Status:", "Initialized");
         telemetry.update();
 
         // Init Motors
-        leftDrive = hardwareMap.get(DcMotor.class, "left_drive")
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive")
+        leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
+        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
 
         waitForStart();
         runtime.reset();
 
         while (opModeIsActive()) {
-            
+            // Define Motor Power Variables
+            double leftPower;
+            double rightPower;
+
+            // Some Math To Calculate drive
+            double drive = -gamepad1.left_stick_y;
+            double turn = gamepad1.left_stick_x;
+
+
+            leftPower    = Range.clip(drive + turn, -1.0, 1.0);
+            rightPower   = Range.clip(drive - turn, -1.0, 1.0);
+
+            leftDrive.setPower(leftPower);
+            rightDrive.setPower(rightDrive);
+
+
+            // Update Telementary
+            telemetry.addData("Status: ", "Running");
+            telemetry.addData("Runtime: ", runtime.toString());
+            telemetry.addData("Motors - ", "Left: (%.2f), Right: (%.2f)", leftPower, rightPower);
+            telemetry.addData("Input  - ", "Drive: (%.2f), Turn: (%.2f)", drive, turn);
+            telemetry.update();
         }
     }
 }
