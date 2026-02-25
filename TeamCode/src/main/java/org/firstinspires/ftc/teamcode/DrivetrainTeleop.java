@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 // Define OP Mode
-@TeleOP(name="DriveTrain TeleOP", group="Linear OpMode")
+@TeleOP(name="DriveTrain TeleOP", group="TeleOp")
 public class BasicOpMode_Linear extends LinearOpMode {
     // Declare OpMode Members
     private ElapsedTime runtime = new ElapsedTime();
@@ -18,18 +18,23 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        // Report Ready
+        // Report Ready Over Telemetry
         telemetry.addData("Status:", "Initialized");
         telemetry.update();
 
-        // Init Motors
+        // Map Motors to Robot Configuration
         leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
 
-        // Set Motor Direction 
-        leftDrive.setDirection(DcMotor.direction.REVERSE);
-        rightDrive.setDirection(DcMotor.direction.FORWARD)
+        // Set Drive Motor Direction.
+        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
+        // Set Motors to Break on Zero Power
+        leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        // Wait for Driver To Start
         waitForStart();
         runtime.reset();
 
@@ -38,24 +43,37 @@ public class BasicOpMode_Linear extends LinearOpMode {
             double leftPower;
             double rightPower;
 
-            // Some Math To Calculate drive
+            // Get Joystick Input Values 
             double drive = -gamepad1.left_stick_y;
             double turn = gamepad1.left_stick_x;
 
-
+            // Santitize the Input Values and calculate Drive Motor Power. 
             leftPower    = Range.clip(drive + turn, -1.0, 1.0);
             rightPower   = Range.clip(drive - turn, -1.0, 1.0);
 
+
+            // Precision Control Mode (Limits Drive Motors to 40% Power)
+            if (gamepad1.left_bumper) {
+                leftPower = leftPower * 0.4;
+                rightPower = rightPower * 0.4;
+            }
+            
+            // Apply Power to the DriveTrain based on previously calculated values
             leftDrive.setPower(leftPower);
-            rightDrive.setPower(rightDrive);
+            rightDrive.setPower(rightPower);
 
 
-            // Update Telementary
+            // Update Telementary Data with Runtime, Motor Power, and Joystic Values
             telemetry.addData("Status: ", "Running");
             telemetry.addData("Runtime: ", runtime.toString());
             telemetry.addData("Motors - ", "Left: (%.2f), Right: (%.2f)", leftPower, rightPower);
             telemetry.addData("Input  - ", "Drive: (%.2f), Turn: (%.2f)", drive, turn);
             telemetry.update();
         }
+
+        // Park Motors
+        leftDrive.setPower(0);
+        rightDrive.setPower(0);
+
     }
 }
