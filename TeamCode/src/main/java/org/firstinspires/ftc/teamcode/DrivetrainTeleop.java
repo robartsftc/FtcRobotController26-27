@@ -66,8 +66,8 @@ public class BasicOpMode_Linear extends LinearOpMode {
             // Update Telementary Data with Runtime, Motor Power, and Joystic Values
             telemetry.addData("Status: ", "Running");
             telemetry.addData("Runtime: ", runtime.toString());
-            telemetry.addData("Motors - ", "Left: (%.2f), Right: (%.2f)", leftPower, rightPower);
             telemetry.addData("Input  - ", "Drive: (%.2f), Turn: (%.2f)", drive, turn);
+            telemetry.addData("Motors - ", "Left: (%.2f), Right: (%.2f)", leftPower, rightPower);
             telemetry.update();
         }
 
