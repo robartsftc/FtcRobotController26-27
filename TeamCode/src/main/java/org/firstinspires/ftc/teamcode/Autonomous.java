@@ -68,7 +68,7 @@ public class Autonomous extends OpMode {
         frontRightMotor.setPower(maxSpeed * (frontRightPower / maxPower));
         backRightMotor.setPower(maxSpeed * (backRightPower / maxPower));
 
-        
+
     }
 
 
