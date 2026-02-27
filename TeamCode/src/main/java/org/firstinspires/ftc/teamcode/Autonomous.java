@@ -54,7 +54,13 @@ public class Autonomous extends OpMode {
         double frontRightPower = forward - strafe - rotate;
         double backRightPower = forward + strafe - rotate;
 
+        //Cap power and speed
         double maxPower = 1.0;
+        double maxSpeed = 1.0;
+        maxPower = math.max(maxPower, Math.abs(frontLeftPower));
+        maxPower = math.max(maxPower, Math.abs(backLeftPower));
+        maxPower = math.max(maxPower, Math.abs(frontRightPower));
+        maxPower = math.max(maxPower, Math.abs(backRightPower));
     }
 
 
