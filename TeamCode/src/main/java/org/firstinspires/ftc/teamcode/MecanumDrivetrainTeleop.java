@@ -21,6 +21,19 @@ public class MecanumDrivetrainTeleOP extends LinearOpMode {
         backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
         backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
 
+        // Set Motor Direction -- TEST ON ROBOT AND UPDATE ACORDINGLY
+        frontLeftDrive.setDirection(DcMotor.REVERSE);
+        frontRightDrive.setDirection(DcMotor.REVERSE);
+        backLeftDrive.setDirection(DcMotor.FORWARD);
+        backRightDrive.setDirection(DcMotor.FORWARD);
+
+        // Tell the Motor To Break On Zero Power
+        frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        
+
         // Update Telemetry With Intialization Status
         telemetry.addData("Status: ". "Intialized");
         telemetry.update();
@@ -74,5 +87,10 @@ public class MecanumDrivetrainTeleOP extends LinearOpMode {
             telemetry.addData("Motors - ", "Front Left: (%.2f), Front Right: (%.2f), Back Left: (%.2f), Back Right: (%.2f)", frontLeftPower, FrontRightPower, backLeftDrive, backRightDrive);
             telemetry.update();
         }
+        // When OpMode Deactive Park Motors
+        frontLeftDrive.setPower(0);
+        frontRightDrive.setPower(0);
+        backLeftDrive.setPower(0);
+        backRightDrive.setPower(0);
     }
 }
