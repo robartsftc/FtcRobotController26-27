@@ -42,7 +42,7 @@ public class MecanumDrivetrainTeleOP extends LinearOpMode {
         LynxModule controlHub = allHubs.get(0);
 
         // Update Telemetry With Intialization Status
-        telemetry.addData("Status: ", "Intialized");
+        telemetry.addData("Status: ", "Intialized And Awating Game Start");
         telemetry.update();
 
         // Reset RunTime and Wait for Game Start
