@@ -13,7 +13,7 @@ import java.util.list;
 
 // Define OP Mode
 @TeleOP(name="DriveTrain TeleOP", group="TeleOp")
-public class BasicOpMode_Linear extends LinearOpMode {
+public class DrivetrainTeleop extends LinearOpMode {
     // Declare OpMode Members
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;

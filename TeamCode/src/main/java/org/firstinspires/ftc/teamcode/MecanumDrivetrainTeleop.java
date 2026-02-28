@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.TempUnit;
 import java.util.list;
 
 @TeleOp(name="Mecanum Drivetrain Teleop", group="TeleOP")
-public class MecanumDrivetrainTeleOP extends LinearOpMode {
+public class MecanumDrivetrainTeleop extends LinearOpMode {
     //Define Motors 
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor frontLeftDrive = null;
@@ -48,7 +48,6 @@ public class MecanumDrivetrainTeleOP extends LinearOpMode {
         // Reset RunTime and Wait for Game Start
         waitForStart();
         rumtime.reset();
-
 
         // Run Op Mode
         while (opModeIsActive()) {
