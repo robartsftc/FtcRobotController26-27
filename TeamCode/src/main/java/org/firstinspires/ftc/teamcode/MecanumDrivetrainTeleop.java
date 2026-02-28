@@ -1,9 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
+// Base Modules Required For Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.hardware.lynx.LynxModule;
+import org.firstinspires.ftc.robotcore.external.navigation.TempUnit;
+import java.util.list;
 
 @TeleOp(name="Mecanum Drivetrain Teleop", group="TeleOP")
 public class MecanumDrivetrainTeleOP extends LinearOpMode {
@@ -33,9 +37,12 @@ public class MecanumDrivetrainTeleOP extends LinearOpMode {
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         
+        // Get Main Hub from All Hubs;
+        List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
+        LynxModule controlHub = allHubs.get(0);
 
         // Update Telemetry With Intialization Status
-        telemetry.addData("Status: ". "Intialized");
+        telemetry.addData("Status: ", "Intialized");
         telemetry.update();
 
         // Reset RunTime and Wait for Game Start
@@ -80,9 +87,19 @@ public class MecanumDrivetrainTeleOP extends LinearOpMode {
             backRightDrive.setPower(backRightPower);
 
 
+            // Get Temperature for Telementary
+            double temp = controlHub.getTemperature(TempUnit.CELSIUS);
+            double Overheat = "False";
+
+            // Check if Overheat
+            if (temp >= 60) {
+                Overheat = "True";
+            }
+
             // Update Telementry
             telemetry.addData("Status: ", "Running");
-            telemetry.addData("Runtime: ", runtime.toString();
+            telemetry.addData("Runtime: ", runtime.toString());
+            telemetry.addData("Temprature - ", "Temp: (%.2f), Overheat: (%.2f)", temp, Overheat);
             telemetry.addData("Input  - ", "Drive: (%.2f), Turn: (%.2f), Strafe: (%.2f)", drive, turn, strafe);
             telemetry.addData("Motors - ", "Front Left: (%.2f), Front Right: (%.2f), Back Left: (%.2f), Back Right: (%.2f)", frontLeftPower, FrontRightPower, backLeftDrive, backRightDrive);
             telemetry.update();

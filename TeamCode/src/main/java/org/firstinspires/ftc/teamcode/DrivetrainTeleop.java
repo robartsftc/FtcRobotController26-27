@@ -7,6 +7,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.hardware.lynx.LynxModule;
+import org.firstinspires.ftc.robotcore.external.navigation.TempUnit;
+import java.util.list;
 
 // Define OP Mode
 @TeleOP(name="DriveTrain TeleOP", group="TeleOp")
@@ -33,6 +36,11 @@ public class BasicOpMode_Linear extends LinearOpMode {
         // Set Motors to Break on Zero Power
         leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
+        // Get Main Hub from All Hubs;
+        List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
+        LynxModule controlHub = allHubs.get(0);
 
         // Wait for Driver To Start
         waitForStart();
@@ -62,10 +70,19 @@ public class BasicOpMode_Linear extends LinearOpMode {
             leftDrive.setPower(leftPower);
             rightDrive.setPower(rightPower);
 
+            // Get Temperature for Telementary
+            double temp = controlHub.getTemperature(TempUnit.CELSIUS);
+            double Overheat = "False";
+
+            // Check if Overheat
+            if (temp >= 60) {
+                Overheat = "True";
+            }
 
             // Update Telementary Data with Runtime, Motor Power, and Joystic Values
             telemetry.addData("Status: ", "Running");
             telemetry.addData("Runtime: ", runtime.toString());
+            telemetry.addData("Temprature - ", "Temp: (%.2f), Overheat: (%.2f)", temp, Overheat);
             telemetry.addData("Input  - ", "Drive: (%.2f), Turn: (%.2f)", drive, turn);
             telemetry.addData("Motors - ", "Left: (%.2f), Right: (%.2f)", leftPower, rightPower);
             telemetry.update();
