@@ -57,10 +57,10 @@ public class Autonomous extends OpMode {
         //Cap power and speed
         double maxPower = 1.0;
         double maxSpeed = 1.0;
-        maxPower = math.max(maxPower, Math.abs(frontLeftPower));
-        maxPower = math.max(maxPower, Math.abs(backLeftPower));
-        maxPower = math.max(maxPower, Math.abs(frontRightPower));
-        maxPower = math.max(maxPower, Math.abs(backRightPower));
+        maxPower = Math.max(maxPower, Math.abs(frontLeftPower));
+        maxPower = Math.max(maxPower, Math.abs(backLeftPower));
+        maxPower = Math.max(maxPower, Math.abs(frontRightPower));
+        maxPower = Math.max(maxPower, Math.abs(backRightPower));
 
         //Set motor power
         frontLeftMotor.setPower(maxSpeed * (frontLeftPower / maxPower));
