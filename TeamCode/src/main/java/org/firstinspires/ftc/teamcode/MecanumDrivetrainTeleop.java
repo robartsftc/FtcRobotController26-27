@@ -60,6 +60,10 @@ public class MecanumDrivetrainTeleOP extends LinearOpMode {
             double turn = gamepad1.right_stick_x;
             double strafe = gamepad1.left_stick_x;
 
+            // Take Button Input For Precision mode
+            boolean Precision = gamepad1.left_bumper;
+
+
             // Calculate Motor Power Based Of Joystick input 
             frontLeftPower = drive + strafe + turn;
             frontRightPower = drive - strafe - turn;
@@ -79,6 +83,13 @@ public class MecanumDrivetrainTeleOP extends LinearOpMode {
                 backrightDrive /= max;
             }
 
+            // 40% Motor Power For Precision Control Mode
+            if (Precision == True) {
+                frontLeftPower *= 0.40;
+                frontRightPower *= 0.40;
+                backLeftPower *= 0.40;
+                backRightPower *= 0.40;
+            }
 
             // Set Motor Power
             frontLeftDrive.setPower(frontLeftPower);
