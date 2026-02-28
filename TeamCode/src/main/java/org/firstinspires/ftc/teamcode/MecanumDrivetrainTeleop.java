@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-// Base Modules Required For Autonomous
+// Modules Required for MotorControl, Hardware Monitoring and Runtime
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -54,21 +54,47 @@ public class MecanumDrivetrainTeleOP extends LinearOpMode {
         while (opModeIsActive()) {
             // Setup for Later
             double max;
+            double movementMode;
 
             // Take Joystick Input and Map to a Variable
             double drive = -gamepad1.left_stick_y;
             double turn = gamepad1.right_stick_x;
             double strafe = gamepad1.left_stick_x;
 
-            // Take Button Input For Precision mode
-            boolean Precision = gamepad1.left_bumper;
+            // Take Button Input For Precision mode & Axel Pivot Mode
+            boolean PrecisionMode = gamepad1.left_bumper;
+            boolean FrontPivotMode = gamepad1.X;
+            boolean BackPivotMode = gamepad1.Y;
 
+            // Check Weather to FrontPivot, BackPivot or to do regular Movement
+            if (FrontPivotMode) {
+                // Set Movment Mode for Telemetry
+                movementMode = "Front Pivot";
 
-            // Calculate Motor Power Based Of Joystick input 
-            frontLeftPower = drive + strafe + turn;
-            frontRightPower = drive - strafe - turn;
-            backLeftPower = drive - strafe + turn;
-            backRightPower = drive + strafe - turn;
+                // Set Motor Speed Based off Strafe Values for Fron Pivot Mode
+                frontLeftPower = 0;
+                frontRightPower = 0;
+                backLeftPower = -turn;
+                backRightPower = turn;
+            } else if (BackPivotMode) {
+                // Set Movment Mode for Telemetry
+                movementMode = "Back Pivot";
+
+                // Set Motor Speed Based off Strafe Values for Fron Back Mode
+                frontLeftPower = turn;
+                frontRightPower = -turn;
+                backLeftPower = 0;
+                backRightPower = 0;
+            } else {
+                // Set Movment Mode for Telemetry
+                movementMode = "Normal";
+
+                // Calculate Motor Power Based Of Joystick input 
+                frontLeftPower = drive + strafe + turn;
+                frontRightPower = drive - strafe - turn;
+                backLeftPower = drive - strafe + turn;
+                backRightPower = drive + strafe - turn;
+            }
 
             // Normalise Motor Power across the Drivetrain to maintain Intended Direction
             max = Math.max(Math.abs(frontLeftPower), Math.abs(frontRightPower));
@@ -84,7 +110,7 @@ public class MecanumDrivetrainTeleOP extends LinearOpMode {
             }
 
             // 40% Motor Power For Precision Control Mode
-            if (Precision == True) {
+            if (PrecisionMode) {
                 frontLeftPower *= 0.40;
                 frontRightPower *= 0.40;
                 backLeftPower *= 0.40;
@@ -112,6 +138,7 @@ public class MecanumDrivetrainTeleOP extends LinearOpMode {
             telemetry.addData("Runtime: ", runtime.toString());
             telemetry.addData("Temprature - ", "Temp: (%.2f), Overheat: (%.2f)", temp, Overheat);
             telemetry.addData("Input  - ", "Drive: (%.2f), Turn: (%.2f), Strafe: (%.2f)", drive, turn, strafe);
+            telemetry.addData("Movement Mode: ", movementMode);
             telemetry.addData("Motors - ", "Front Left: (%.2f), Front Right: (%.2f), Back Left: (%.2f), Back Right: (%.2f)", frontLeftPower, FrontRightPower, backLeftDrive, backRightDrive);
             telemetry.update();
         }

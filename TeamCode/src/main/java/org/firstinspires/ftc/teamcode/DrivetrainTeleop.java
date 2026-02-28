@@ -55,13 +55,16 @@ public class BasicOpMode_Linear extends LinearOpMode {
             double drive = -gamepad1.left_stick_y;
             double turn = gamepad1.left_stick_x;
 
+            // Get Button State
+            boolean PrecisionMode = gamepad1.left_bumper;
+
             // Santitize the Input Values and calculate Drive Motor Power. 
             leftPower    = Range.clip(drive + turn, -1.0, 1.0);
             rightPower   = Range.clip(drive - turn, -1.0, 1.0);
 
 
             // Precision Control Mode (Limits Drive Motors to 40% Power)
-            if (gamepad1.left_bumper) {
+            if (PrecisionMode) {
                 leftPower = leftPower * 0.4;
                 rightPower = rightPower * 0.4;
             }
