@@ -1,7 +1,6 @@
 // Import The Required Packages in order for Robot control
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,15 +8,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.hardware.lynx.LynxModule;
 import org.firstinspires.ftc.robotcore.external.navigation.TempUnit;
-import java.util.list;
+import java.util.List;
 
 // Define OP Mode
-@TeleOP(name="DriveTrain TeleOP", group="TeleOp")
+@TeleOp(name="DriveTrain TeleOP", group="TeleOp")
 public class DrivetrainTeleop extends LinearOpMode {
     // Declare OpMode Members
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
-    private Dcmotor rightDrive = null;
+    private DcMotor rightDrive = null;
 
     @Override
     public void runOpMode() {
@@ -75,7 +74,7 @@ public class DrivetrainTeleop extends LinearOpMode {
 
             // Get Temperature for Telementary
             double temp = controlHub.getTemperature(TempUnit.CELSIUS);
-            double Overheat = "False";
+            String Overheat = "False";
 
             // Check if Overheat
             if (temp >= 60) {

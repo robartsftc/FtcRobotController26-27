@@ -7,12 +7,16 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.hardware.lynx.LynxModule;
 import org.firstinspires.ftc.robotcore.external.navigation.TempUnit;
-import java.util.list;
+
+import java.util.List;
+
 
 @TeleOp(name="Mecanum Drivetrain Teleop", group="TeleOP")
 public class MecanumDrivetrainTeleop extends LinearOpMode {
-    //Define Motors 
+    // Define Runtime
     private ElapsedTime runtime = new ElapsedTime();
+
+    // Define Motors
     private DcMotor frontLeftDrive = null;
     private DcMotor frontRightDrive = null;
     private DcMotor backLeftDrive = null;
@@ -26,10 +30,10 @@ public class MecanumDrivetrainTeleop extends LinearOpMode {
         backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
 
         // Set Motor Direction -- TEST ON ROBOT AND UPDATE ACORDINGLY
-        frontLeftDrive.setDirection(DcMotor.REVERSE);
-        frontRightDrive.setDirection(DcMotor.REVERSE);
-        backLeftDrive.setDirection(DcMotor.FORWARD);
-        backRightDrive.setDirection(DcMotor.FORWARD);
+        frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
+        frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
+        backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        backRightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         // Tell the Motor To Break On Zero Power
         frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -47,13 +51,17 @@ public class MecanumDrivetrainTeleop extends LinearOpMode {
 
         // Reset RunTime and Wait for Game Start
         waitForStart();
-        rumtime.reset();
+        runtime.reset();
 
         // Run Op Mode
         while (opModeIsActive()) {
-            // Setup for Later
+            // Setup Variables for Later
             double max;
-            double movementMode;
+            String movementMode;
+            double frontLeftPower;
+            double frontRightPower;
+            double backLeftPower;
+            double backRightPower;
 
             // Take Joystick Input and Map to a Variable
             double drive = -gamepad1.left_stick_y;
@@ -62,8 +70,8 @@ public class MecanumDrivetrainTeleop extends LinearOpMode {
 
             // Take Button Input For Precision mode & Axel Pivot Mode
             boolean PrecisionMode = gamepad1.left_bumper;
-            boolean FrontPivotMode = gamepad1.X;
-            boolean BackPivotMode = gamepad1.Y;
+            boolean FrontPivotMode = gamepad1.cross;
+            boolean BackPivotMode = gamepad1.triangle;
 
             // Check Weather to FrontPivot, BackPivot or to do regular Movement
             if (FrontPivotMode) {
@@ -104,8 +112,8 @@ public class MecanumDrivetrainTeleop extends LinearOpMode {
             if (max > 1.0) {
                 frontLeftPower /= max;
                 frontRightPower /= max;
-                backLeftDrive /= max;
-                backrightDrive /= max;
+                backLeftPower /= max;
+                backRightPower /= max;
             }
 
             // 40% Motor Power For Precision Control Mode
@@ -125,7 +133,7 @@ public class MecanumDrivetrainTeleop extends LinearOpMode {
 
             // Get Temperature for Telementary
             double temp = controlHub.getTemperature(TempUnit.CELSIUS);
-            double Overheat = "False";
+            String Overheat = "False";
 
             // Check if Overheat
             if (temp >= 60) {
@@ -138,7 +146,7 @@ public class MecanumDrivetrainTeleop extends LinearOpMode {
             telemetry.addData("Temprature - ", "Temp: (%.2f), Overheat: (%.2f)", temp, Overheat);
             telemetry.addData("Input  - ", "Drive: (%.2f), Turn: (%.2f), Strafe: (%.2f)", drive, turn, strafe);
             telemetry.addData("Movement Mode: ", movementMode);
-            telemetry.addData("Motors - ", "Front Left: (%.2f), Front Right: (%.2f), Back Left: (%.2f), Back Right: (%.2f)", frontLeftPower, FrontRightPower, backLeftDrive, backRightDrive);
+            telemetry.addData("Motors - ", "Front Left: (%.2f), Front Right: (%.2f), Back Left: (%.2f), Back Right: (%.2f)", frontLeftPower, frontRightPower, backLeftPower, backRightPower );
             telemetry.update();
         }
         // When OpMode Deactive Park Motors
