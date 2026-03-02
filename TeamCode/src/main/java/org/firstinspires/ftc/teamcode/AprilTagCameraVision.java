@@ -63,6 +63,8 @@ public class AprilTagCameraVision {
         return detectedTags;
     }
 
+
+    //Displays to telemetry
     public void displayDetectionTelemetry(AprilTagDetection detectedId){
         if (detectedId == null){return;}
         if (detectedId.metadata != null) {
