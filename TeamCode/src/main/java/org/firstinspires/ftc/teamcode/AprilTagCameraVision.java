@@ -17,6 +17,7 @@ import java.util.List;
 
 
 public class AprilTagCameraVision {
+    // Processes camera frames and detects April Tags
     private AprilTagProcessor aprilTagProcessor;
     // Manages the camera and vision processors
     private VisionPortal visionPortal;
@@ -25,9 +26,12 @@ public class AprilTagCameraVision {
     // Used to send messages to the Driver Hub screen
     private Telemetry telemetry;
 
+    // Called once to set up the camera and april tag processor
     public void init(HardwareMap hwMap, Telemetry telemetry){
+        // Save telemetry so we can use it in other methods
         this.telemetry = telemetry;
 
+        // Build the april tag processor with display options
         aprilTagProcessor = new AprilTagProcessor.Builder()
                 .setDrawTagID(true)        // Show tag ID on camera stream
                 .setDrawTagOutline(true)   // Draw outline around detected tag
@@ -36,12 +40,48 @@ public class AprilTagCameraVision {
                 .setOutputUnits(DistanceUnit.CM, AngleUnit.DEGREES) // Use CM and degrees
                 .build();
 
+        // Build the vision portal which connects the camera to the processor
         VisionPortal.Builder builder = new VisionPortal.Builder();
+        // Set the camera to use by looking it up in the hardware config
         builder.setCamera(hwMap.get(WebcamName.class, "Webcam 1"));
         // Set camera resolution to 640x480
-        builder.setCameraResolution(new Size(640, 480)); // Set webcam size to "640 x 480"
+        builder.setCameraResolution(new Size(640, 480));
+        // Attach the april tag processor to the vision portal
         builder.addProcessor(aprilTagProcessor);
 
+        // Finalize and create the vision portal
         visionPortal = builder.build();
+    }
+
+    // Call this every loop to refresh the list of detected tags
+    public void update(){
+        detectedTags = aprilTagProcessor.getDetections();
+    }
+
+    // Returns the full list of currently detected April Tags
+    public List<AprilTagDetection> getDetectedTags(){
+        return detectedTags;
+    }
+
+    // Searches the detected tags for one with a specific ID
+    // Returns the tag if found, or null if not found
+    public AprilTagDetection getTagBySpecificId(int id){
+        // Loop through every detected tag
+        for (AprilTagDetection detection : detectedTags){
+            // If this tag's ID matches what we're looking for, return it
+            if (detection.id == id){
+                return detection;
+            }
+        }
+        // No tag with that ID was found
+        return null;
+    }
+
+    // Shuts down the vision portal when autonomous is done
+    public void stop() {
+        // Only close if the vision portal was actually created
+        if (visionPortal != null){
+            visionPortal.close();
+        }
     }
 }
