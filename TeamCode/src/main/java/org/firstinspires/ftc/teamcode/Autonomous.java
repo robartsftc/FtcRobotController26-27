@@ -21,7 +21,7 @@ public class Autonomous extends OpMode {
     private IMU imu;
     private AprilTagCameraVision aprilTagVision;
 
-    private boolean isBlueTeam = true;  // true = Blue (Tag 20), false = Red (Tag 21)
+    private boolean isBlueTeam = true;  // true = Blue (Tag 20), false = Red (Tag 24)
 
     @Override
     public void init() {
@@ -86,7 +86,7 @@ public class Autonomous extends OpMode {
         aprilTagVision.update();
 
         // Choose target tag based on team
-        int targetTagId = isBlueTeam ? 20 : 21;
+        int targetTagId = isBlueTeam ? 20 : 24;
 
         AprilTagDetection targetTag = aprilTagVision.getTagBySpecificId(targetTagId);
 
