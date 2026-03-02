@@ -4,7 +4,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.hardware.lynx.LynxModule;
@@ -25,7 +24,7 @@ public class DrivetrainTeleop extends LinearOpMode {
         telemetry.addData("Status:", "Initialized");
         telemetry.update();
 
-        // Change Control Style Based Of Driver Prefrence
+        // Change Control Style Based Of Driver Preference
         String ControlMode = "simple";
 
         // Setup Control Variables
@@ -62,13 +61,13 @@ public class DrivetrainTeleop extends LinearOpMode {
             double rightPower;
 
             // Check Control Mapping  (Simple vs Trigger Based)
-            if (ControlMode == "simple") {
+            if ("simple".equals(ControlMode)) {
                 drive = -gamepad1.left_stick_y;
                 turn = gamepad1.left_stick_x;
 
                 // Get Left Bumper For Precision Mode
                 PrecisionMode = gamepad1.left_bumper;
-            } else if (ControlMode == "trigger") {
+            } else if ("trigger".equals(ControlMode)) {
                 // Take Joystick input for Turning
                 turn = gamepad1.left_stick_x;
 
@@ -81,6 +80,10 @@ public class DrivetrainTeleop extends LinearOpMode {
 
                 // Calculate Drive
                 drive = r_trigger - l_trigger;
+            } else {
+                drive = 0;
+                turn = 0;
+                PrecisionMode = false;
             }
 
 
@@ -111,7 +114,7 @@ public class DrivetrainTeleop extends LinearOpMode {
             // Update Telemetry Data with Runtime, Motor Power, and Joystick Values
             telemetry.addData("Status: ", "Running");
             telemetry.addData("Runtime: ", runtime.toString());
-            telemetry.addData("Temperature - ", "Temp: (%.2f), Overheat: (%.2f)", temp, Overheat);
+            telemetry.addData("Temperature - ", "Temp: (%.2f), Overheat: (%s)", temp, Overheat);
             telemetry.addData("Input  - ", "Drive: (%.2f), Turn: (%.2f)", drive, turn);
             telemetry.addData("Motors - ", "Left: (%.2f), Right: (%.2f)", leftPower, rightPower);
             telemetry.update();
