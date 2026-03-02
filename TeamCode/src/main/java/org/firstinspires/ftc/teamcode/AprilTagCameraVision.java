@@ -18,29 +18,27 @@ import java.util.List;
 
 public class AprilTagCameraVision {
     private AprilTagProcessor aprilTagProcessor;
+    // Manages the camera and vision processors
     private VisionPortal visionPortal;
-
+    // Stores the list of currently detected April Tags
     private List<AprilTagDetection> detectedTags = new ArrayList<>();
-
+    // Used to send messages to the Driver Hub screen
     private Telemetry telemetry;
 
     public void init(HardwareMap hwMap, Telemetry telemetry){
         this.telemetry = telemetry;
 
         aprilTagProcessor = new AprilTagProcessor.Builder()
-                .setDrawTagID(true)
-                .setDrawTagOutline(true)
-                .setDrawAxes(true)
-                .setDrawCubeProjection(true)
-                .setOutputUnits(DistanceUnit.CM, AngleUnit.DEGREES)
+                .setDrawTagID(true)        // Show tag ID on camera stream
+                .setDrawTagOutline(true)   // Draw outline around detected tag
+                .setDrawAxes(true)         // Draw axes on tag
+                .setDrawCubeProjection(true) // Draw 3D cube on tag
+                .setOutputUnits(DistanceUnit.CM, AngleUnit.DEGREES) // Use CM and degrees
                 .build();
 
         VisionPortal.Builder builder = new VisionPortal.Builder();
         builder.setCamera(hwMap.get(WebcamName.class, "Webcam 1"));
-        builder.setCameraResolution(new Size(640 x 480));
+        // Set camera resolution to 640x480
+        builder.setCameraResolution(new Size(640, 480)); // fixed: was "640 x 480"
     }
-
-
-
-
 }
