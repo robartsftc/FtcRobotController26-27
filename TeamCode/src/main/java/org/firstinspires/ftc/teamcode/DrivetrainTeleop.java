@@ -24,6 +24,16 @@ public class DrivetrainTeleop extends LinearOpMode {
         telemetry.addData("Status:", "Initialized");
         telemetry.update();
 
+        // Change Control Style Based Of Driver Preference
+        String ControlMode = "simple";
+
+        // Setup Control Variables
+        double drive = 0;
+        double turn = 0;
+        boolean PrecisionMode = false;
+        double r_trigger = 0;
+        double l_trigger = 0;
+
         // Map Motors to Robot Configuration
         leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
@@ -50,14 +60,34 @@ public class DrivetrainTeleop extends LinearOpMode {
             double leftPower;
             double rightPower;
 
-            // Get Joystick Input Values 
-            double drive = -gamepad1.left_stick_y;
-            double turn = gamepad1.left_stick_x;
+            // Check Control Mapping  (Simple vs Trigger Based)
+            if ("simple".equals(ControlMode)) {
+                drive = -gamepad1.left_stick_y;
+                turn = gamepad1.left_stick_x;
 
-            // Get Button State
-            boolean PrecisionMode = gamepad1.left_bumper;
+                // Get Left Bumper For Precision Mode
+                PrecisionMode = gamepad1.left_bumper;
+            } else if ("trigger".equals(ControlMode)) {
+                // Take Joystick input for Turning
+                turn = gamepad1.left_stick_x;
 
-            // Santitize the Input Values and calculate Drive Motor Power. 
+                // Get Circle Button For Precision Mode
+                PrecisionMode = gamepad1.circle;
+
+                // Take R and Left Trigger
+                r_trigger = gamepad1.right_trigger;
+                l_trigger = gamepad1.left_trigger;
+
+                // Calculate Drive
+                drive = r_trigger - l_trigger;
+            } else {
+                drive = 0;
+                turn = 0;
+                PrecisionMode = false;
+            }
+
+
+            // Sanitize the Input Values and calculate Drive Motor Power.
             leftPower    = Range.clip(drive + turn, -1.0, 1.0);
             rightPower   = Range.clip(drive - turn, -1.0, 1.0);
 
@@ -72,7 +102,7 @@ public class DrivetrainTeleop extends LinearOpMode {
             leftDrive.setPower(leftPower);
             rightDrive.setPower(rightPower);
 
-            // Get Temperature for Telementary
+            // Get Temperature for Telemetry
             double temp = controlHub.getTemperature(TempUnit.CELSIUS);
             String Overheat = "False";
 
@@ -81,10 +111,10 @@ public class DrivetrainTeleop extends LinearOpMode {
                 Overheat = "True";
             }
 
-            // Update Telementary Data with Runtime, Motor Power, and Joystic Values
+            // Update Telemetry Data with Runtime, Motor Power, and Joystick Values
             telemetry.addData("Status: ", "Running");
             telemetry.addData("Runtime: ", runtime.toString());
-            telemetry.addData("Temprature - ", "Temp: (%.2f), Overheat: (%.2f)", temp, Overheat);
+            telemetry.addData("Temperature - ", "Temp: (%.2f), Overheat: (%s)", temp, Overheat);
             telemetry.addData("Input  - ", "Drive: (%.2f), Turn: (%.2f)", drive, turn);
             telemetry.addData("Motors - ", "Left: (%.2f), Right: (%.2f)", leftPower, rightPower);
             telemetry.update();
