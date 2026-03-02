@@ -8,6 +8,7 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
 public class Autonomous extends OpMode {
@@ -18,6 +19,9 @@ public class Autonomous extends OpMode {
     private DcMotor backRightMotor;
 
     private IMU imu;
+    private AprilTagCameraVision aprilTagVision;
+
+    private boolean isBlueTeam = true;  // true = Blue (Tag 20), false = Red (Tag 21)
 
     @Override
     public void init() {
@@ -44,6 +48,10 @@ public class Autonomous extends OpMode {
 
         //Initialise imu
         imu.initialize(new IMU.Parameters(RevOrientation));
+
+        //Call the April tag detector file
+        aprilTagVision = new AprilTagCameraVision();
+        aprilTagVision.init(hardwareMap, telemetry);
     }
 
     public void drive(double forward, double strafe, double rotate){
@@ -74,7 +82,21 @@ public class Autonomous extends OpMode {
 
     @Override
     public void loop() {
-        telemetry.addData("Status", "Running");
+
+        aprilTagVision.update();
+
+        // Choose target tag based on team
+        int targetTagId = isBlueTeam ? 20 : 21;
+
+        AprilTagDetection targetTag = aprilTagVision.getTagBySpecificId(targetTagId);
+
+        if (targetTag != null) {
+            telemetry.addLine("Target Tag Found: " + targetTagId);
+            aprilTagVision.displayDetectionTelemetry(targetTag);
+        } else {
+            telemetry.addLine("Target Tag NOT Found: " + targetTagId);
+        }
+
         telemetry.update();
     }
 }
