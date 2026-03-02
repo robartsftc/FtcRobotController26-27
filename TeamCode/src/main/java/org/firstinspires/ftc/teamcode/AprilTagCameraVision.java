@@ -39,6 +39,9 @@ public class AprilTagCameraVision {
         VisionPortal.Builder builder = new VisionPortal.Builder();
         builder.setCamera(hwMap.get(WebcamName.class, "Webcam 1"));
         // Set camera resolution to 640x480
-        builder.setCameraResolution(new Size(640, 480)); // fixed: was "640 x 480"
+        builder.setCameraResolution(new Size(640, 480)); // Set webcam size to "640 x 480"
+        builder.addProcessor(aprilTagProcessor);
+
+        visionPortal = builder.build();
     }
 }
