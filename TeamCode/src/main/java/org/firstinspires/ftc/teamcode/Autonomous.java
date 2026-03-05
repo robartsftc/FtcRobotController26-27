@@ -1,5 +1,5 @@
 /* Hello, all the code in this file was coded by Tejas Heejebu from RoBarts (Team 27941)
-This code is meant for the rev robotics mecanum wheels drivertrain.
+This code is meant for the Rev Robotics mecanum wheels drivertrain.
  */
 
 package org.firstinspires.ftc.teamcode;
