@@ -85,16 +85,43 @@ public class Autonomous extends OpMode {
 
         aprilTagVision.update();
 
-        // Choose target tag based on team
         int targetTagId = isBlueTeam ? 20 : 24;
 
         AprilTagDetection targetTag = aprilTagVision.getTagBySpecificId(targetTagId);
 
         if (targetTag != null) {
+
             telemetry.addLine("Target Tag Found: " + targetTagId);
             aprilTagVision.displayDetectionTelemetry(targetTag);
+
+            double range = targetTag.ftcPose.range;
+            double bearing = targetTag.ftcPose.bearing;
+            double yaw = targetTag.ftcPose.yaw;
+
+            double forward = 0;
+            double strafe = 0;
+            double rotate = 0;
+
+            // Desired distance from tag (cm)
+            double targetDistance = 30;
+
+            // Forward/backward control
+            forward = (range - targetDistance) * 0.02;
+
+            // Strafe to center the tag
+            strafe = bearing * 0.01;
+
+            // Rotate to face tag
+            rotate = yaw * 0.01;
+
+            drive(forward, strafe, rotate);
+
         } else {
-            telemetry.addLine("Target Tag NOT Found: " + targetTagId);
+
+            telemetry.addLine("Target Tag NOT Found");
+
+            // Stop robot if tag not visible
+            drive(0,0,0.2);
         }
 
         telemetry.update();
