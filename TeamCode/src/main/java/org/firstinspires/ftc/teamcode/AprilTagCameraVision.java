@@ -1,3 +1,7 @@
+/* Hello, all of the code in this file was written by Tejas Heejebu of Robarts (Team 27941)
+I coded this specifically for the Logitech C270, but any webcam will be sufficient. 
+ */
+
 package org.firstinspires.ftc.teamcode;
 
 import android.util.Size;
