@@ -1,5 +1,4 @@
 /* Hello, all the code in this file was coded by Tejas Heejebu from RoBarts (Team 27941)
-This code is meant for the Rev Robotics mecanum wheels drivertrain.
  */
 
 package org.firstinspires.ftc.teamcode;
@@ -14,7 +13,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
 public class AprilTagAutonomousTest extends OpMode {
 
-
+    private AprilTagCameraVision aprilTagVision;
     private boolean isBlueTeam = true;  // true = Blue (Tag 20), false = Red (Tag 24)
 
     @Override
