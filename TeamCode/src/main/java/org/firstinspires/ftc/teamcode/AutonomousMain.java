@@ -87,6 +87,13 @@ public class AutonomousMain extends OpMode {
 
         int targetTagId = isBlueTeam ? 20 : 24;
 
+        // Show all tags except the target tag
+        for (AprilTagDetection tag : aprilTagVision.getDetectedTags()) {
+            if (tag.id != targetTagId) {
+                telemetry.addLine("Seen Tag ID: " + tag.id);
+            }
+        }
+
         AprilTagDetection targetTag = aprilTagVision.getTagBySpecificId(targetTagId);
 
         if (targetTag != null) {
