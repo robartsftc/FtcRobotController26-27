@@ -2,7 +2,7 @@
 I coded this specifically for the Logitech C270, but any webcam will be sufficient. 
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.AutonomousFiles;
 
 import android.util.Size;
 

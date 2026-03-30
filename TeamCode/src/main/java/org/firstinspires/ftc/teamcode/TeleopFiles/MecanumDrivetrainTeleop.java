@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.TeleopFiles;
 
 // Modules Required for MotorControl, Hardware Monitoring and Runtime
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;

@@ -2,12 +2,13 @@
 This code is meant for the Rev Robotics mecanum wheels drivertrain.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.AutonomousFiles;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
+
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous

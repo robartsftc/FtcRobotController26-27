@@ -1,5 +1,5 @@
 // Import The Required Packages in order for Robot control
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.TeleopFiles;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;

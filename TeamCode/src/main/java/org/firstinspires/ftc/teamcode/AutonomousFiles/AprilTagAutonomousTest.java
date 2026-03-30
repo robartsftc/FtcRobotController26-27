@@ -1,12 +1,9 @@
 /* Hello, all the code in this file was coded by Tejas Heejebu from RoBarts (Team 27941)
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.AutonomousFiles;
 
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
