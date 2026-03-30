@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
-public class AutonomousMain extends OpMode {
+public class MecanumDrivetrainAutonomous extends OpMode {
     // This declares the four motors needed
     private DcMotor frontLeftMotor;
     private DcMotor frontRightMotor;
