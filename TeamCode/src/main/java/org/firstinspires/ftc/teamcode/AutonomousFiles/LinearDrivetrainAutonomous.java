@@ -34,7 +34,7 @@ public class LinearDrivetrainAutonomous extends OpMode {
 
     }
 
-    public void drive(double forward, double rotate){
+    public void drive(double forward, double rotate) {
         //Declare the power equations
         double leftPower = forward + rotate;
         double rightPower = forward - rotate;
@@ -96,9 +96,10 @@ public class LinearDrivetrainAutonomous extends OpMode {
             telemetry.addLine("Target Tag NOT Found");
 
             // Stop robot if tag not visible
-            drive(0,0.2);
+            drive(0, 0.2);
         }
 
         telemetry.update();
     }
 
+}
