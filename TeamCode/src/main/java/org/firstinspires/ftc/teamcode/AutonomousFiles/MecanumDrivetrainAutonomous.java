@@ -34,9 +34,9 @@ public class MecanumDrivetrainAutonomous extends OpMode {
         backRightMotor = hardwareMap.get(DcMotor.class, "back_right_motor");
 
         //Set motor directions
-        frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+        frontLeftMotor.setDirection(DcMotor.Direction.FORWARD);
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-        frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
+        frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
         backRightMotor.setDirection(DcMotor.Direction.FORWARD);
 
         //Set IMU
@@ -110,8 +110,8 @@ public class MecanumDrivetrainAutonomous extends OpMode {
             double strafe = 0;
             double rotate = 0;
 
-            // Desired distance from tag (cm)
-            double targetDistance = 30;
+            // Desired distance from tag (in)
+            double targetDistance = 8;
 
             // Forward/backward control
             forward = (range - targetDistance) * 0.02;
@@ -129,7 +129,7 @@ public class MecanumDrivetrainAutonomous extends OpMode {
             telemetry.addLine("Target Tag NOT Found");
 
             // Stop robot if tag not visible
-            drive(0,0,0.2);
+            drive(0,0,0);
         }
 
         telemetry.update();
