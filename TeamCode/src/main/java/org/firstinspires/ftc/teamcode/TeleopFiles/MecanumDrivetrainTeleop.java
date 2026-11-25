@@ -22,6 +22,9 @@ public class MecanumDrivetrainTeleop extends LinearOpMode {
     private DcMotor backLeftDrive = null;
     private DcMotor backRightDrive = null;
 
+    // Define the Pollen Pusher
+    private PollenPusher pusher = new PollenPusher();
+
     public void runOpMode() {
         // Map the Motors to there respective Hardware 
         frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_motor");
@@ -40,6 +43,9 @@ public class MecanumDrivetrainTeleop extends LinearOpMode {
         frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        // Initialise Pollen Pusher
+        pusher.init(hardwareMap);
         
         // Get Main Hub from All Hubs;
         List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
@@ -68,10 +74,11 @@ public class MecanumDrivetrainTeleop extends LinearOpMode {
             double turn = gamepad1.right_stick_x;
             double strafe = gamepad1.left_stick_x;
 
-            // Take Button Input For Precision mode & Axel Pivot Mode
+            // Take Button Input For Precision mode & Axel Pivot Mode & Pollen Pusher
             boolean PrecisionMode = gamepad1.left_bumper;
             boolean FrontPivotMode = gamepad1.cross;
             boolean BackPivotMode = gamepad1.triangle;
+            boolean PusherPressed = gamepad1.right_bumper;   // Activates Pollen Pusher
 
             // Check Weather to FrontPivot, BackPivot or to do regular Movement
             if (FrontPivotMode) {
@@ -130,6 +137,13 @@ public class MecanumDrivetrainTeleop extends LinearOpMode {
             backLeftDrive.setPower(backLeftPower);
             backRightDrive.setPower(backRightPower);
 
+            // Pollen Pusher Activation
+            if (PusherPressed){
+                pusher.setPusherServo(1.0); // When holding the button  (0.0 -> 1.0)
+            } else {
+                pusher.setPusherServo(0.0); // When not holding the button
+            }
+
 
             // Get Temperature for Telementary
             double temp = controlHub.getTemperature(TempUnit.CELSIUS);
@@ -143,7 +157,6 @@ public class MecanumDrivetrainTeleop extends LinearOpMode {
             // Update Telementry
             telemetry.addData("Status: ", "Running");
             telemetry.addData("Runtime: ", runtime.toString());
-            telemetry.addData("Temprature - ", "Temp: (%.2f), Overheat: (%.2f)", temp, Overheat);
             telemetry.addData("Input  - ", "Drive: (%.2f), Turn: (%.2f), Strafe: (%.2f)", drive, turn, strafe);
             telemetry.addData("Movement Mode: ", movementMode);
             telemetry.addData("Motors - ", "Front Left: (%.2f), Front Right: (%.2f), Back Left: (%.2f), Back Right: (%.2f)", frontLeftPower, frontRightPower, backLeftPower, backRightPower );
