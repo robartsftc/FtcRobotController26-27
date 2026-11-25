@@ -110,8 +110,8 @@ public class MecanumDrivetrainAutonomous extends OpMode {
             double strafe = 0;
             double rotate = 0;
 
-            // Desired distance from tag (in)
-            double targetDistance = 8;
+            // Desired distance from tag (cm)
+            double targetDistance = 20;
 
             // Forward/backward control
             forward = (range - targetDistance) * 0.02;
